@@ -1,5 +1,3 @@
-const { result } = require('lodash');
-
 const ObjectId = require('mongodb').ObjectId
 module.exports = function(app, passport, db) {
 
@@ -49,13 +47,12 @@ module.exports = function(app, passport, db) {
     })
 
     app.put('/updateStudylogs', (req, res) => {
-      const _id = ObjectId(req.body._id)
-      const date = req.body.date
-      const subject = req.body.subject
-      const time = req.body.time
+      console.log(req.body)
+      const {date, subject, time, id} = req.body
+      console.log(id)
       db.collection('studylog')
       .findOneAndUpdate({
-        _id: _id
+        "_id":ObjectId(id)
       }, 
       {
         $set: {
@@ -63,10 +60,14 @@ module.exports = function(app, passport, db) {
           subject: subject, 
           time: time
         }
-      },
-         (err, result) => {
+      }, {
+        // sort: { _id: -1 },
+        returnOriginal : false
+        // upsert: true //if record not found then create one
+      },(err, result) => {
         if (err) return res.send(err)
-        res.send('Log updated')
+        console.log(result)
+        res.send(result)
       })
     })
 

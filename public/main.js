@@ -40,7 +40,6 @@ Array.from(save).forEach(function (element) {
         if (response.ok) return response.json()
       })
       .then(data => {
-        
         // window.location.reload(true)
         const date = this.parentNode.parentNode.childNodes[1]
         date.innerText = data.value.date
