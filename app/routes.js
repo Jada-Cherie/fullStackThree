@@ -1,3 +1,5 @@
+const { result } = require('lodash');
+
 const ObjectId = require('mongodb').ObjectId
 module.exports = function(app, passport, db) {
 
@@ -11,12 +13,12 @@ module.exports = function(app, passport, db) {
     // PROFILE SECTION =========================
     //reads, gets all the logs
     app.get('/profile', isLoggedIn, function(req, res) {
-        db.collection('studylog').find().toArray((err, studylogs) => {
+        db.collection('studylog').find().toArray((err, result) => {
           if (err) 
           return console.log(err)
           res.render('profile.ejs', {
             user : req.user,
-            studylogs: studylogs
+            studylogs: result
           })
         })
     });
@@ -35,7 +37,7 @@ module.exports = function(app, passport, db) {
     app.post('/studylogs', (req, res) => {
       db.collection('studylog').save({
         date: req.body.date, 
-        subj: req.body.subj, 
+        subject: req.body.subject, 
         time: req.body.time
       }, 
       (err, result) => {
@@ -46,19 +48,20 @@ module.exports = function(app, passport, db) {
       })
     })
 
-    app.put('/studylogs/:id', (req, res) => {
+    app.put('/updateStudylogs', (req, res) => {
       const _id = ObjectId(req.body._id)
-      const updatedLog = { 
-        date: req.body.date, 
-        subj: req.body.subj, 
-        time: req.body.time }
+      const date = req.body.date
+      const subject = req.body.subject
+      const time = req.body.time
       db.collection('studylog')
       .findOneAndUpdate({
         _id: _id
       }, 
       {
         $set: {
-          updatedLog
+          date: date, 
+          subject: subject, 
+          time: time
         }
       },
          (err, result) => {
