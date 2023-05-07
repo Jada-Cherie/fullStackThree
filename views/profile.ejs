@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+    <title>StudyLogs</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="/public/style.css">
+</head>
+<body>
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1><span class="fa fa-anchor"></span> Are you ready to focus?</h1>
+        <p>Log the times that you have studied for the day to keep track of your habits!</p>
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+    </div>
+
+    <div class="row">
+
+        <!-- LOCAL INFORMATION -->
+        <div class="col-sm-6">
+            <div class="well">
+                <h3></span> User's Study Hall</h3>
+
+                <% if (user.local.email) { %>
+                    <p>
+                        <!-- <strong>id</strong>: <%= user._id %><br> -->
+                        <strong>email</strong>: <%= user.local.email %><br>
+                        <!-- <strong>password</strong>: <%= user.local.password %> -->
+                    </p>
+
+                    <a href="/unlink/local" class="btn btn-default">Unlink</a>
+                <% } else { %>
+                    <a href="/connect/local" class="btn btn-default">Connect Local</a>
+                <% } %>
+
+            </div>
+        </div>
+        <div class="container">
+          <h1>Study Log</h1>
+          <form id="log-form" method="post" action="/studylogs">
+            <div class="form-group">
+              <label for="date">Date:</label>
+              <input type="date" id="date" name="date" required>
+            </div>
+            <div class="form-group">
+              <label for="subj">Subject:</label>
+              <input type="text" id="subj" name="subj" required>
+            </div>
+            <div class="form-group">
+              <label for="time">Time (in minutes):</label>
+              <input type="number" id="time" name="time" required>
+            </div>
+            <button type="submit" class="btn">Add Log</button>
+          </form>
+          <table id="log-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Subject</th>
+                <th>Time (minutes)</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for (var i = 0; i<studylogs.length; i++) { %>
+                <tr>
+                  <td><%= studylogs[i].date %></td>
+                  <td><%= studylogs[i].subj %></td>
+                  <td><%= studylogs[i].time %></td>
+                  <td>
+                    <button class="editBtn" data-id="<%= studylogs[i]._id %>">Edit</button>
+                    <button class="delete-btn" data-id="<%= studylogs[i]._id %>">Delete</button>
+                  </td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+
+<script src="main.js"></script>
+
+</body>
+</html>
