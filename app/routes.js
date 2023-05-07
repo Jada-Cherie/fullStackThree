@@ -46,7 +46,7 @@ module.exports = function(app, passport, db) {
       })
     })
 
-    app.put('/studylogs', (req, res) => {
+    app.put('/studylogs/:id', (req, res) => {
       const _id = ObjectId(req.body._id)
       const updatedLog = { 
         date: req.body.date, 
